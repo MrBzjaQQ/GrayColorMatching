@@ -1,0 +1,152 @@
+﻿<Window x:Class="GrayColorMatching.UI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GrayColorMatching.UI"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:helpers="clr-namespace:GrayColorMatching.UI.Helpers"
+        mc:Ignorable="d"
+        Title="MainWindow"
+        MinHeight="525"
+        Height="525"
+        MinWidth="900"
+        Width="900">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.5*" />
+            <ColumnDefinition Width="0.5*" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="0.65*" />
+                <RowDefinition Height="0.25*" />
+                <RowDefinition Height="0.1*" />
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0">Исходный текст:</Label>
+            <xctk:RichTextBox Grid.Row="1" AcceptsReturn="True" Text="{Binding SourceText, UpdateSourceTrigger=PropertyChanged}" >
+                <xctk:RichTextBox.TextFormatter>
+                    <!--<helpers:MyPlainTextFormatter />-->
+                    <xctk:PlainTextFormatter></xctk:PlainTextFormatter>
+                </xctk:RichTextBox.TextFormatter>
+            </xctk:RichTextBox>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.4*" />
+                    <ColumnDefinition Width="0.6*" />
+                </Grid.ColumnDefinitions>
+
+                <GroupBox Grid.Column="0" Header="Формат цвета">
+                    <StackPanel>
+                        <CheckBox Margin="5" IsChecked="{Binding IsShortHexChecked}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="15" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Rectangle Grid.Column="0" Fill="{Binding ShortHexColor}"/>
+                                <TextBlock Grid.Column="1" Margin="5 0">#FFF</TextBlock>
+                            </Grid>
+                        </CheckBox>
+                        <CheckBox Margin="5" IsChecked="{Binding IsHexChecked}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="15" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Rectangle Grid.Column="0" Fill="{Binding HexColor}"/>
+                                <TextBlock Grid.Column="1" Margin="5 0">#FFFFFF</TextBlock>
+                            </Grid>
+                        </CheckBox>
+                        <CheckBox Margin="5" IsChecked="{Binding IsRgbChecked}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="15" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Rectangle Grid.Column="0" Fill="{Binding RgbColor}"/>
+                                <TextBlock Grid.Column="1" Margin="5 0">rgb(128, 128, 128)</TextBlock>
+                            </Grid>
+                        </CheckBox>
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Grid.Column="1" Header="Настройки">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
+                        <Grid Margin="0 0 0 5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.75*"/>
+                                <ColumnDefinition Width="0.25*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label>Мин. компонент белого цвета</Label>
+                            <xctk:IntegerUpDown
+                                Grid.Column="1"
+                                Minimum="250"
+                                Maximum="255"
+                                Value="{Binding MinWhiteComponent}" />
+                        </Grid>
+                        <Grid Grid.Row="1" Margin="0 0 0 5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.75*"/>
+                                <ColumnDefinition Width="0.25*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label>Макс. компонент черного цвета</Label>
+                            <xctk:IntegerUpDown
+                                Grid.Column="1"
+                                Minimum="1"
+                                Maximum="5"
+                                Value="{Binding MaxBlackComponent}" />
+                        </Grid>
+                        <Grid Grid.Row="2" Margin="0 0 0 5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.75*"/>
+                                <ColumnDefinition Width="0.25*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label>Макс. разница компонент</Label>
+                            <xctk:IntegerUpDown
+                                Grid.Column="1"
+                                Minimum="0"
+                                Maximum="3"
+                                Value="{Binding Delta}" />
+                        </Grid>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="0.5*" />
+                </Grid.ColumnDefinitions>
+                <Button 
+                    Grid.Column="0" 
+                    Height="30" 
+                    Margin="5" 
+                    Command="{Binding OpenFileCommand}">Открыть файл</Button>
+                <Button 
+                    Grid.Column="1" 
+                    Height="30" 
+                    Margin="5" 
+                    IsEnabled="{Binding IsFindColorEnabled}"
+                    Command="{Binding FindColorCommand}">Найти цвет</Button>
+            </Grid>
+        </Grid>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Label>Результат:</Label>
+            <xctk:RichTextBox AcceptsReturn="True" Name="ResultBox" Grid.Row="1" IsReadOnly="True" Text="{Binding ResultText}">
+                <xctk:RichTextBox.TextFormatter>
+                    <!--<helpers:MyPlainTextFormatter />-->
+                    <xctk:PlainTextFormatter></xctk:PlainTextFormatter>
+                </xctk:RichTextBox.TextFormatter>
+            </xctk:RichTextBox>
+        </Grid>
+    </Grid>
+</Window>

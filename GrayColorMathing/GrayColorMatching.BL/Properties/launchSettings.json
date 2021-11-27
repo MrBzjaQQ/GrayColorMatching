@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "GrayColorMatching.BL": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}
