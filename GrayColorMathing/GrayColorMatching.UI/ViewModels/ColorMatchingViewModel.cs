@@ -217,7 +217,7 @@ namespace GrayColorMatching.UI.ViewModels
             {
                 using FileStream stream = new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read);
                 using StreamReader reader = new StreamReader(stream);
-                SourceText = reader.ReadToEnd();
+                SourceText = reader.ReadToEnd().Replace("\r\n", "");
                 reader.Close();
                 stream.Close();
             }

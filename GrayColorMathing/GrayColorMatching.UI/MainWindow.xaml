@@ -25,7 +25,7 @@
                 <RowDefinition Height="0.1*" />
             </Grid.RowDefinitions>
             <Label Grid.Row="0">Исходный текст:</Label>
-            <xctk:RichTextBox Grid.Row="1" AcceptsReturn="True" Text="{Binding SourceText, UpdateSourceTrigger=PropertyChanged}" >
+            <xctk:RichTextBox Grid.Row="1" Text="{Binding SourceText, UpdateSourceTrigger=PropertyChanged}" >
                 <xctk:RichTextBox.TextFormatter>
                     <!--<helpers:MyPlainTextFormatter />-->
                     <xctk:PlainTextFormatter></xctk:PlainTextFormatter>
@@ -141,7 +141,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Label>Результат:</Label>
-            <xctk:RichTextBox AcceptsReturn="True" Name="ResultBox" Grid.Row="1" IsReadOnly="True" Text="{Binding ResultText}">
+            <xctk:RichTextBox Name="ResultBox" Grid.Row="1" IsReadOnly="True" Text="{Binding ResultText}">
                 <xctk:RichTextBox.TextFormatter>
                     <!--<helpers:MyPlainTextFormatter />-->
                     <xctk:PlainTextFormatter></xctk:PlainTextFormatter>

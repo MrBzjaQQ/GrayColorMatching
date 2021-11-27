@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Documents;
@@ -22,33 +23,50 @@ namespace GrayColorMatching.UI
 
         public void OnHighlightChanged(object sender, HighlightChangedEventArgs e)
         {
-            HighlightEntries(e.HighlightedEntries);
+            List<HighlightedEntry> groupedEntries = new List<HighlightedEntry>(e.HighlightedEntries);
+            groupedEntries.Sort((a, b) => a.Index - b.Index);
+            HighlightEntries(groupedEntries);
         }
 
-        private void HighlightEntries(IEnumerable<HighlightedEntry> entries)
+        private void HighlightEntries(List<HighlightedEntry> entries)
         {
             var textRange = new TextRange(ResultBox.Document.ContentStart, ResultBox.Document.ContentEnd);
             textRange.ApplyPropertyValue(TextElement.BackgroundProperty, Brushes.Transparent);
 
-            TextPointer text = ResultBox.Document.ContentStart;
-
             foreach (var highlightedEntry in entries)
             {
-                while (text.GetPointerContext(LogicalDirection.Forward) != TextPointerContext.Text)
+                TextPointer text = ResultBox.Document.ContentStart;
+                int offset = 0;
+                while (offset <= highlightedEntry.Index)
                 {
-                    text = text.GetNextContextPosition(LogicalDirection.Forward);
+                    var newText = text.GetPositionAtOffset(1);
+                    if (newText == null)
+                        break;
+                    text = newText;
+                    var context = text.GetPointerContext(LogicalDirection.Forward);
+                    if (context is not TextPointerContext.Text)
+                        continue;
+                    offset++;
                 }
 
-                int entryIndex = text.GetTextInRun(LogicalDirection.Forward).IndexOf(highlightedEntry.Text, StringComparison.InvariantCulture);
+                int offsetEnd = 0;
+                TextPointer entryEnd = text;
+                while (offsetEnd < highlightedEntry.Length)
+                {
+                    var newEnd = entryEnd.GetPositionAtOffset(1);
+                    if (newEnd == null)
+                        break;
+                    entryEnd = newEnd;
+                    var context = entryEnd.GetPointerContext(LogicalDirection.Forward);
+                    if (context is not TextPointerContext.Text)
+                        continue;
+                    offsetEnd++;
+                }
 
-                text = text.GetPositionAtOffset(entryIndex);
-
-                var entryEnd = text.GetPositionAtOffset(highlightedEntry.Length, LogicalDirection.Forward);
                 var range = new TextRange(text, entryEnd);
                 range.ApplyPropertyValue(TextElement.BackgroundProperty, new BrushConverter().ConvertFromString(highlightedEntry.ColorName));
-
-                text = entryEnd;
             }
+
         }
     }
 }
