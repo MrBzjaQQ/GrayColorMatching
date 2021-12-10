@@ -3,15 +3,19 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:GrayColorMatching.UI"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        xmlns:helpers="clr-namespace:GrayColorMatching.UI.Helpers"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         mc:Ignorable="d"
-        Title="MainWindow"
+        Title="GrayColorMatching"
         MinHeight="525"
         Height="525"
         MinWidth="900"
         Width="900">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding WindowClosingCommand}"></i:InvokeCommandAction>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.5*" />
@@ -25,10 +29,9 @@
                 <RowDefinition Height="0.1*" />
             </Grid.RowDefinitions>
             <Label Grid.Row="0">Исходный текст:</Label>
-            <xctk:RichTextBox Grid.Row="1" Text="{Binding SourceText, UpdateSourceTrigger=PropertyChanged}" >
+            <xctk:RichTextBox Grid.Row="1" AcceptsReturn="False" Text="{Binding SourceText, UpdateSourceTrigger=PropertyChanged}">
                 <xctk:RichTextBox.TextFormatter>
-                    <!--<helpers:MyPlainTextFormatter />-->
-                    <xctk:PlainTextFormatter></xctk:PlainTextFormatter>
+                    <xctk:PlainTextFormatter />
                 </xctk:RichTextBox.TextFormatter>
             </xctk:RichTextBox>
             <Grid Grid.Row="2">
@@ -87,7 +90,7 @@
                             <xctk:IntegerUpDown
                                 Grid.Column="1"
                                 Minimum="250"
-                                Maximum="255"
+                                Maximum="254"
                                 Value="{Binding MinWhiteComponent}" />
                         </Grid>
                         <Grid Grid.Row="1" Margin="0 0 0 5">
@@ -141,10 +144,9 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Label>Результат:</Label>
-            <xctk:RichTextBox Name="ResultBox" Grid.Row="1" IsReadOnly="True" Text="{Binding ResultText}">
+            <xctk:RichTextBox Name="ResultBox" AcceptsReturn="False" Grid.Row="1" IsReadOnly="True" Text="{Binding ResultText}">
                 <xctk:RichTextBox.TextFormatter>
-                    <!--<helpers:MyPlainTextFormatter />-->
-                    <xctk:PlainTextFormatter></xctk:PlainTextFormatter>
+                    <xctk:PlainTextFormatter />
                 </xctk:RichTextBox.TextFormatter>
             </xctk:RichTextBox>
         </Grid>

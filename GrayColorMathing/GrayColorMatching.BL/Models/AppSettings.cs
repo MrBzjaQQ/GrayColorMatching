@@ -13,9 +13,9 @@ namespace GrayColorMatching.BL.Models
         public int Delta { get; set; }
 
         [JsonPropertyName("maxBlackComponent")]
-        public int MaxBlackComponent { get; set; }
+        public int MaxBlackComponent { get; set; } = 1;
 
         [JsonPropertyName("minWhiteComponent")]
-        public int MinWhiteComponent { get; set; } = 255;
+        public int MinWhiteComponent { get; set; } = 254;
     }
 }

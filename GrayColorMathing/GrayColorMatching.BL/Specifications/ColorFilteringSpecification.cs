@@ -30,16 +30,16 @@ namespace GrayColorMatching.BL.Specifications
 
         protected bool IsBlackLessOrEqual(int red, int green, int blue)
         {
-            return Math.Abs(red - green) <= MaxBlackComponent
-                   && Math.Abs(green - blue) <= MaxBlackComponent
-                   && Math.Abs(red - blue) <= MaxBlackComponent;
+            return red >= MaxBlackComponent
+                   && green >= MaxBlackComponent
+                   && blue >= MaxBlackComponent;
         }
 
         protected bool IsWhiteMoreOrEqual(int red, int green, int blue)
         {
-            return Math.Abs(red - green) >= MaxBlackComponent
-                   && Math.Abs(green - blue) >= MaxBlackComponent
-                   && Math.Abs(red - blue) >= MaxBlackComponent;
+            return red <= MinWhiteComponent
+                   && green <= MinWhiteComponent
+                   && blue <= MinWhiteComponent;
         }
     }
 }

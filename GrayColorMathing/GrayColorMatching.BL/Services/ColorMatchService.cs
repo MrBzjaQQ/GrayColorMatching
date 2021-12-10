@@ -17,7 +17,7 @@ namespace GrayColorMatching.BL.Services
             {
                 { ColorType.ShortHex, "(?!#[0-9A-Fa-f]{6})#[0-9A-Fa-f]{3}" },
                 { ColorType.Hex, "#[0-9A-Fa-f]{6}" },
-                { ColorType.Rgb, @"rgb\s*(\s*[0-9]{1,3},\s*[0-9]{1,3},\s*[0-9]{1,3}\s*)" }
+                { ColorType.Rgb, @"rgb\s*\(\s*(2[0-5]{0,2}|[01][0-9]{0,2}|\d{1,2})\s*,\s*(2[0-5]{0,2}|[01][0-9]{0,2}|\d{1,2})\s*,\s*(2[0-5]{0,2}|[01][0-9]{0,2}|\d{1,2})\s*\)" }
             };
             _appSettingsService = appSettingsService;
         }
@@ -81,7 +81,7 @@ namespace GrayColorMatching.BL.Services
                     break;
 
                 case ColorType.Rgb:
-                    specification = new ColorFilteringHexSpecification(
+                    specification = new ColorFilteringRgbSpecification(
                         maxBlackComponent,
                         minWhiteComponent,
                         delta);

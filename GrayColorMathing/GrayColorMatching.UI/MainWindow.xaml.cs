@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
 using GrayColorMatching.UI.Events;
 using GrayColorMatching.UI.Models;
-using GrayColorMatching.UI.ViewModels;
 
 namespace GrayColorMatching.UI
 {
@@ -64,7 +60,7 @@ namespace GrayColorMatching.UI
                 }
 
                 var range = new TextRange(text, entryEnd);
-                range.ApplyPropertyValue(TextElement.BackgroundProperty, new BrushConverter().ConvertFromString(highlightedEntry.ColorName));
+                range.ApplyPropertyValue(TextElement.BackgroundProperty, new BrushConverter().ConvertFromString(highlightedEntry.ColorName)!);
             }
 
         }

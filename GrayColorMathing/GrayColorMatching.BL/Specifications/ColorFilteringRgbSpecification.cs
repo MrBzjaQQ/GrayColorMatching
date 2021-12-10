@@ -23,7 +23,7 @@ namespace GrayColorMatching.BL.Specifications
             int indexOfOpenBracket = entry.IndexOf("(", StringComparison.InvariantCulture);
             int indexOfCloseBracket = entry.IndexOf(")", StringComparison.InvariantCulture);
 
-            string[] components = entry.Substring(indexOfOpenBracket + 1, indexOfCloseBracket)
+            string[] components = entry.Substring(indexOfOpenBracket + 1, indexOfCloseBracket - indexOfOpenBracket - 1)
                 .Split(',')
                 .Select(x => x.Trim())
                 .ToArray();

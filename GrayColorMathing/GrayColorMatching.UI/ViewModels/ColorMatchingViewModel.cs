@@ -2,10 +2,7 @@
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Markup;
 using GrayColorMatching.BL;
 using GrayColorMatching.BL.Models;
 using GrayColorMatching.BL.Services;
@@ -28,15 +25,17 @@ namespace GrayColorMatching.UI.ViewModels
         private bool _isRgbChecked;
         private ICommand _findColorCommand;
         private ICommand _openFileCommand;
-        private Dictionary<ColorType, string> _highlightTable;
+        private ICommand _windowClosingCommand;
+        private readonly Dictionary<ColorType, string> _highlightTable;
 
         public ColorMatchingViewModel(IColorMatchService matchService, IAppSettingsService appSettingsService)
         {
             _matchService = matchService;
             _appSettingsService = appSettingsService;
+            LoadColorType();
             SelectDefaultColorPatternIfNecessary();
 
-            _highlightTable = new Dictionary<ColorType, string>()
+            _highlightTable = new Dictionary<ColorType, string>
             {
                 {ColorType.ShortHex, "Pink"},
                 {ColorType.Hex, "BlanchedAlmond"},
@@ -74,7 +73,12 @@ namespace GrayColorMatching.UI.ViewModels
             set
             {
                 _isShortHexChecked = value;
-                ColorType |= ColorType.ShortHex;
+
+                if (value)
+                    ColorType |= ColorType.ShortHex;
+                else
+                    ColorType &= ~ColorType.ShortHex;
+
                 SelectDefaultColorPatternIfNecessary();
                 OnPropertyChanged(nameof(IsShortHexChecked));
             }
@@ -89,7 +93,12 @@ namespace GrayColorMatching.UI.ViewModels
             set
             {
                 _isHexChecked = value;
-                ColorType |= ColorType.Hex;
+
+                if (value)
+                    ColorType |= ColorType.Hex;
+                else
+                    ColorType &= ~ColorType.Hex;
+
                 SelectDefaultColorPatternIfNecessary();
                 OnPropertyChanged(nameof(IsHexChecked));
             }
@@ -104,7 +113,12 @@ namespace GrayColorMatching.UI.ViewModels
             set
             {
                 _isRgbChecked = value;
-                ColorType |= ColorType.Rgb;
+
+                if (value)
+                    ColorType |= ColorType.Rgb;
+                else
+                    ColorType &= ~ColorType.Rgb;
+
                 SelectDefaultColorPatternIfNecessary();
                 OnPropertyChanged(nameof(IsRgbChecked));
             }
@@ -145,6 +159,8 @@ namespace GrayColorMatching.UI.ViewModels
             }
         }
 
+        public ICommand WindowClosingCommand => _windowClosingCommand ??= new RelayCommand(_ => OnWindowClosing());
+
         public bool IsFindColorEnabled => !string.IsNullOrWhiteSpace(SourceText);
 
         public ColorType ColorType
@@ -154,15 +170,9 @@ namespace GrayColorMatching.UI.ViewModels
             set => _appSettingsService.Settings.ColorType = (short)value;
         }
 
-        public ICommand FindColorCommand => _findColorCommand ??= new RelayCommand(_ =>
-        {
-            OnFindColorClick();
-        });
+        public ICommand FindColorCommand => _findColorCommand ??= new RelayCommand(_ => OnFindColorClick());
 
-        public ICommand OpenFileCommand => _openFileCommand ??= new RelayCommand(_ =>
-        {
-            OnOpenFileClick();
-        });
+        public ICommand OpenFileCommand => _openFileCommand ??= new RelayCommand(_ => OnOpenFileClick());
 
         public event PropertyChangedEventHandler PropertyChanged;
         public event HighlightChangedEventHandler HighlightChanged;
@@ -231,6 +241,19 @@ namespace GrayColorMatching.UI.ViewModels
                 ColorType = ColorType.ShortHex;
                 OnPropertyChanged(nameof(IsShortHexChecked));
             }
+        }
+
+        private void LoadColorType()
+        {
+            var colorType = ColorType;
+            IsShortHexChecked = colorType.HasFlag(ColorType.ShortHex);
+            IsHexChecked = colorType.HasFlag(ColorType.Hex);
+            IsRgbChecked = colorType.HasFlag(ColorType.Rgb);
+        }
+
+        private void OnWindowClosing()
+        {
+            _appSettingsService.SaveSettings();
         }
     }
 }
