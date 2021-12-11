@@ -260,7 +260,7 @@ namespace GrayColorMatching.BL.Tests
                 "#F0f0F0#F0f0F0",
                 ColorType.Hex,
                 new[] { "#F0f0F0", "#F0f0F0" },
-                new List<int> { 0,  7 },
+                new List<int> { 0, 7 },
                 new AppSettings());
         }
 
@@ -270,6 +270,20 @@ namespace GrayColorMatching.BL.Tests
                 "rgb(254, 254, 254)",
                 ColorType.Rgb,
                 new[] { "rgb(254, 254, 254)" },
+                new List<int> { 0 },
+                new AppSettings());
+
+            yield return new TestCaseData(
+                "RGB(254, 254, 254)",
+                ColorType.Rgb,
+                new[] { "RGB(254, 254, 254)" },
+                new List<int> { 0 },
+                new AppSettings());
+
+            yield return new TestCaseData(
+                "RgB(254, 254, 254)",
+                ColorType.Rgb,
+                new[] { "RgB(254, 254, 254)" },
                 new List<int> { 0 },
                 new AppSettings());
 
