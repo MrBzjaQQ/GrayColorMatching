@@ -281,6 +281,13 @@ namespace GrayColorMatching.BL.Tests
                 new AppSettings());
 
             yield return new TestCaseData(
+                "RGB(249, 249, 249)",
+                ColorType.Rgb,
+                new[] { "RGB(249, 249, 249)" },
+                new List<int> { 0 },
+                new AppSettings());
+
+            yield return new TestCaseData(
                 "RgB(254, 254, 254)",
                 ColorType.Rgb,
                 new[] { "RgB(254, 254, 254)" },
