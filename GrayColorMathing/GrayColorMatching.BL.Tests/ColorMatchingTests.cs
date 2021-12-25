@@ -288,6 +288,21 @@ namespace GrayColorMatching.BL.Tests
                 new AppSettings());
 
             yield return new TestCaseData(
+                "RGB(100, 100, 100)",
+                ColorType.Rgb,
+                new[] { "RGB(100, 100, 100)" },
+                new List<int> { 0 },
+                new AppSettings());
+
+
+            yield return new TestCaseData(
+                "RGB(99, 99, 99)",
+                ColorType.Rgb,
+                new[] { "RGB(99, 99, 99)" },
+                new List<int> { 0 },
+                new AppSettings());
+
+            yield return new TestCaseData(
                 "RgB(254, 254, 254)",
                 ColorType.Rgb,
                 new[] { "RgB(254, 254, 254)" },
@@ -644,6 +659,11 @@ namespace GrayColorMatching.BL.Tests
                 {
                     Delta = 3
                 });
+
+            yield return new TestCaseData(
+                "rgb(053, 053, 053)",
+                ColorType.Rgb,
+                new AppSettings());
         }
 
         public static IEnumerable<TestCaseData> CombinedNegativeTests()

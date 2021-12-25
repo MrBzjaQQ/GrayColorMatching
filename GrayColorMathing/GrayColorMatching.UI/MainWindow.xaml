@@ -49,7 +49,7 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <Rectangle Grid.Column="0" Fill="{Binding ShortHexColor}"/>
-                                <TextBlock Grid.Column="1" Margin="5 0">#FFF</TextBlock>
+                                <TextBlock Grid.Column="1" Margin="5 0">#AAA</TextBlock>
                             </Grid>
                         </CheckBox>
                         <CheckBox Margin="5" IsChecked="{Binding IsHexChecked}">
@@ -59,7 +59,7 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <Rectangle Grid.Column="0" Fill="{Binding HexColor}"/>
-                                <TextBlock Grid.Column="1" Margin="5 0">#FFFFFF</TextBlock>
+                                <TextBlock Grid.Column="1" Margin="5 0">#AAAAAA</TextBlock>
                             </Grid>
                         </CheckBox>
                         <CheckBox Margin="5" IsChecked="{Binding IsRgbChecked}">
